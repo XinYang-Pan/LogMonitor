@@ -15,6 +15,7 @@ public class CoreService {
 	@PostConstruct
 	public void init() {
 		Thread t = new Thread(logMonitorSimple::start);
+		t.setDaemon(true);
 		t.start();
 	}
 
