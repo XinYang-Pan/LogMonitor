@@ -9,4 +9,5 @@ public class LogMonitorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LogMonitorApplication.class, args);
 	}
+
 }
