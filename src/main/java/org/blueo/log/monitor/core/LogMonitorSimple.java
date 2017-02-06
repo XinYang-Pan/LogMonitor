@@ -86,7 +86,7 @@ public class LogMonitorSimple {
 	}
 
 	public List<String> getContent() {
-		return Lists.newArrayList(content);
+		return Lists.reverse(content);
 	}
 
 	// -----------------------------

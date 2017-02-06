@@ -7,7 +7,7 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
-public class LogMonitorDate extends LogMonitorSimple {
+public class LogMonitorDaily extends LogMonitorSimple {
 	private ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
 	private String pattern = "yyyy-MM-dd";
 	
@@ -18,11 +18,11 @@ public class LogMonitorDate extends LogMonitorSimple {
 		scheduler.schedule(this::restart, trigger);
 	}
 	
-	public LogMonitorDate() {
+	public LogMonitorDaily() {
 		super();
 	}
 
-	public LogMonitorDate(String name, String file) {
+	public LogMonitorDaily(String name, String file) {
 		super(name, file);
 	}
 	
