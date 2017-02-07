@@ -17,8 +17,14 @@ public class CoreController {
 	private CoreService coreService;
 
 	@RequestMapping("/content")
-	public String getContent() {
+	public String content() {
 		return Joiner.on("<br/>").join(coreService.getContent());
+	}
+
+	@RequestMapping("/restart")
+	public String restart() {
+		coreService.restartAll();
+		return "success";
 	}
 	
 	// name is the key

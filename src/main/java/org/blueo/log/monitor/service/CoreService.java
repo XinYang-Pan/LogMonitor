@@ -22,4 +22,8 @@ public class CoreService {
 		return logMonitor.getContent();
 	}
 
+	public void restartAll() {
+		logMonitor.restart();
+	}
+
 }
