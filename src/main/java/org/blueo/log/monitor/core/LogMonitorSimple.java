@@ -94,7 +94,7 @@ public class LogMonitorSimple implements LogMonitor {
 	
 	private void checkForEviction() {
 		while (content.size() > maxLine) {
-			content.removeLast();
+			content.removeFirst();
 		}
 	}
 
