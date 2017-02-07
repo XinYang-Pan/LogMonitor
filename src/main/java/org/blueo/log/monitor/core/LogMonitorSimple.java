@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 
 import com.google.common.collect.Lists;
 
-public class LogMonitorSimple {
+public class LogMonitorSimple implements LogMonitor {
 	private final Logger log = LoggerFactory.getLogger(LogMonitorSimple.class);
 	//
 	private String name = "NoName";
@@ -32,7 +32,17 @@ public class LogMonitorSimple {
 		this.file = file;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.blueo.log.monitor.core.LogMonitor#start()
+	 */
+	@Override
 	public void start() {
+		Thread t = new Thread(this::doStart);
+		t.setDaemon(true);
+		t.start();
+	}
+
+	private void doStart() {
 		try {
 			String[] command;
 			if (SystemUtils.IS_OS_WINDOWS) {
@@ -47,7 +57,7 @@ public class LogMonitorSimple {
 			BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line = null;
 			while ((line = input.readLine()) != null) {
-				content.add(line);
+				content.add(String.format("%s : %s", name, line));
 				this.checkForEviction();
 			}
 			int exitVal = process.waitFor();
@@ -58,17 +68,20 @@ public class LogMonitorSimple {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.blueo.log.monitor.core.LogMonitor#stop()
+	 */
+	@Override
 	public void stop() {
 		if (process != null) {
-			try {
-				process.destroyForcibly().waitFor();
-			} catch (InterruptedException e) {
-				log.error("Error", e);
-				throw new RuntimeException(e);
-			}
+			process.destroyForcibly();
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.blueo.log.monitor.core.LogMonitor#restart()
+	 */
+	@Override
 	public void restart() {
 		this.stop();
 		this.start();
@@ -85,6 +98,10 @@ public class LogMonitorSimple {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.blueo.log.monitor.core.LogMonitor#getContent()
+	 */
+	@Override
 	public List<String> getContent() {
 		return Lists.reverse(content);
 	}
